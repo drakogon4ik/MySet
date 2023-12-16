@@ -15,9 +15,9 @@ namespace ConsoleApp1
             int[] arr = { 1, 7, 3, -100, 40, 2, -1, 7, 80, 7 };
             MySet node = TurnIntoChain(arr);
             Console.WriteLine(node);
-            node.InsertTo(80);
+            node.InsertTo(9);
             Console.WriteLine(node);
-            Console.WriteLine(node.BelongTo(5));
+            Console.WriteLine(node.BelongTo(9));
         }
 
         static MySet TurnIntoChain(int[] arr)
@@ -54,7 +54,19 @@ namespace ConsoleApp1
 
         public void InsertTo(int num)
         {
-            node = new IntNode(num, node);
+            IntNode comming = new IntNode(num, null);
+            if (node == null)
+                node = comming;
+            else if (node.GetNext() == null)
+            {
+                comming.SetNext(node.GetNext());
+                node.SetNext(comming);
+            }
+            else
+            {
+                MySet temp = new MySet(node.GetNext());
+                temp.InsertTo(num);
+            }
         }
 
         public bool BelongTo(int num)
@@ -76,7 +88,7 @@ namespace ConsoleApp1
             return this.node.GetInfo() + " " + this.node.GetNext();
         }
     }
-    
+
 
     class IntNode
     {
