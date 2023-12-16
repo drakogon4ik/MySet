@@ -15,17 +15,29 @@ namespace ConsoleApp1
             int[] arr = { 1, 7, 3, -100, 40, 2, -1, 7, 80, 7 };
             MySet node = TurnIntoChain(arr);
             Console.WriteLine(node);
-            node.InsertTo(9);
+            node.InsertTo(7);
             Console.WriteLine(node);
-            Console.WriteLine(node.BelongTo(9));
+            Console.WriteLine(node.BelongTo(7));
         }
 
         static MySet TurnIntoChain(int[] arr)
         {
+            bool t = true;
             IntNode node = null;
+            int[] temparr = new int[arr.Length];
             for (int i = arr.Length - 1; i > -1; i--)
             {
-                node = new IntNode(arr[i], node);
+                for(int k = 0; k < arr.Length; k++)
+                {
+                    if (arr[i] == temparr[k])
+                        t = false;
+                }
+                if (t)
+                {
+                    node = new IntNode(arr[i], node);
+                    temparr[i] = arr[i];
+                }
+                t = true;
             }
             MySet temp = new MySet(node);
             return temp;
@@ -57,12 +69,12 @@ namespace ConsoleApp1
             IntNode comming = new IntNode(num, null);
             if (node == null)
                 node = comming;
-            else if (node.GetNext() == null)
+            else if ((node.GetNext() == null) && (node.GetInfo() != num))
             {
                 comming.SetNext(node.GetNext());
                 node.SetNext(comming);
             }
-            else
+            else if (node.GetInfo() != num)
             {
                 MySet temp = new MySet(node.GetNext());
                 temp.InsertTo(num);
