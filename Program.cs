@@ -96,8 +96,17 @@ namespace ConsoleApp1
 
         public override string ToString()
         {
-
-            return this.node.GetInfo() + " " + this.node.GetNext();
+            IntNode p = this.node;
+            string s = "{ ";
+            while(p != null)
+            {
+                s += p.GetInfo();
+                if (p.GetNext() != null)
+                    s += ", ";
+                p = p.GetNext();
+            }
+            s += " }";
+            return s;
         }
     }
 
