@@ -18,7 +18,7 @@ namespace ConsoleApp1
             node.InsertTo(7);
             node.InsertTo(9);
             Console.WriteLine(node);
-            Console.WriteLine(node.BelongTo(7));
+            Console.WriteLine(node.BelongTo(8));
         }
 
         static MySet TurnIntoChain(int[] arr)
@@ -40,7 +40,8 @@ namespace ConsoleApp1
                 }
                 t = true;
             }
-            MySet temp = new MySet(node);
+            MySet temp = new MySet();
+            temp.SetNode(node);
             return temp;
         }
     }
@@ -50,9 +51,9 @@ namespace ConsoleApp1
     {
         private IntNode node;
 
-        public MySet(IntNode node)
+        public MySet()
         {
-            this.node = node;
+            this.node = null;
         }
 
         public IntNode GetNode()
@@ -72,7 +73,7 @@ namespace ConsoleApp1
                 return;
             }
 
-            if(p.GetInfo() == num)
+            if (p.GetInfo() == num)
             {
                 return;
             }
@@ -100,7 +101,7 @@ namespace ConsoleApp1
         {
             IntNode p = this.node;
             string s = "{ ";
-            while(p != null)
+            while (p != null)
             {
                 s += p.GetInfo();
                 if (p.GetNext() != null)
