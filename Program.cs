@@ -16,6 +16,7 @@ namespace ConsoleApp1
             MySet node = TurnIntoChain(arr);
             Console.WriteLine(node);
             node.InsertTo(7);
+            node.InsertTo(9);
             Console.WriteLine(node);
             Console.WriteLine(node.BelongTo(7));
         }
@@ -27,7 +28,7 @@ namespace ConsoleApp1
             int[] temparr = new int[arr.Length];
             for (int i = arr.Length - 1; i > -1; i--)
             {
-                for(int k = 0; k < arr.Length; k++)
+                for (int k = 0; k < arr.Length; k++)
                 {
                     if (arr[i] == temparr[k])
                         t = false;
@@ -63,22 +64,23 @@ namespace ConsoleApp1
         {
             this.node = node;
         }
+        private void Insert(int num, IntNode p)
+        {
+            if (p == null)
+            {
+                node = new IntNode(num, node);
+                return;
+            }
 
+            if(p.GetInfo() == num)
+            {
+                return;
+            }
+            Insert(num, p.GetNext());
+        }
         public void InsertTo(int num)
         {
-            IntNode comming = new IntNode(num, null);
-            if (node == null)
-                node = comming;
-            else if ((node.GetNext() == null) && (node.GetInfo() != num))
-            {
-                comming.SetNext(node.GetNext());
-                node.SetNext(comming);
-            }
-            else if (node.GetInfo() != num)
-            {
-                MySet temp = new MySet(node.GetNext());
-                temp.InsertTo(num);
-            }
+            Insert(num, this.node);
         }
 
         public bool BelongTo(int num)
