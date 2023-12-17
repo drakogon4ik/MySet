@@ -17,8 +17,11 @@ namespace ConsoleApp1
             Console.WriteLine(node);
             node.InsertTo(7);
             node.InsertTo(9);
+            node.InsertTo(9);
+            node.InsertTo(0);
             Console.WriteLine(node);
-            Console.WriteLine(node.BelongTo(8));
+            Console.WriteLine(node.BelongTo(0));
+            Console.WriteLine(node);
         }
 
         static MySet TurnIntoChain(int[] arr)
@@ -84,17 +87,21 @@ namespace ConsoleApp1
             Insert(num, this.node);
         }
 
-        public bool BelongTo(int num)
+        public bool Belong(int num, IntNode temp)
         {
-            if (node == null)
+            if (temp == null)
                 return false;
-            else if (node.GetInfo() == num)
+            else if (temp.GetInfo() == num)
                 return true;
-            node = node.GetNext();
-            if (BelongTo(num))
+            if (Belong(num, temp.GetNext()))
                 return true;
             else
                 return false;
+        }
+
+        public bool BelongTo(int num)
+        {
+            return Belong(num, node);
         }
 
         public override string ToString()
