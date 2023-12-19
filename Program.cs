@@ -87,7 +87,7 @@ namespace ConsoleApp1
             Insert(num, this.node);
         }
 
-        public bool Belong(int num, IntNode temp)
+        private bool Belong(int num, IntNode temp)
         {
             if (temp == null)
                 return false;
