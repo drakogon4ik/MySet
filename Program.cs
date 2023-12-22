@@ -12,16 +12,11 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            int[] arr = { 1, 7, 3, -100, 40, 2, -1, 7, 80, 7 };
+            int[] arr = { 100, 50, 30, 15, 3 };
+            int[] arr1 = { 100, 50, 30, 15, 3 };
             MySet node = TurnIntoChain(arr);
-            Console.WriteLine(node);
-            node.InsertTo(7);
-            node.InsertTo(9);
-            node.InsertTo(9);
-            node.InsertTo(0);
-            Console.WriteLine(node);
-            Console.WriteLine(node.BelongTo(0));
-            Console.WriteLine(node);
+            MySet node1 = TurnIntoChain(arr1);
+            Console.WriteLine(node.IsSame(node1));
         }
 
         static MySet TurnIntoChain(int[] arr)
@@ -68,6 +63,8 @@ namespace ConsoleApp1
         {
             this.node = node;
         }
+
+
         private void Insert(int num, IntNode p)
         {
             if (p == null)
@@ -87,6 +84,7 @@ namespace ConsoleApp1
             Insert(num, this.node);
         }
 
+
         private bool Belong(int num, IntNode temp)
         {
             if (temp == null)
@@ -103,6 +101,111 @@ namespace ConsoleApp1
         {
             return Belong(num, node);
         }
+
+
+        public int CheckLen()
+        {
+            int n = 0;
+            while(node != null)
+            {
+                n++;
+                node = node.GetNext();
+            }
+            return n;
+        }
+
+
+        private IntNode InsertOrdered(int num, IntNode res)
+        {
+            if (res == null)
+                return new IntNode(num);
+            IntNode temp = res;
+            while (temp != null)
+            {
+                if (temp.GetInfo() == num)
+                    return res;
+                temp = temp.GetNext();
+            }
+            IntNode b = res;
+            if (num >= res.GetInfo())
+                return new IntNode(num, res);
+            while (res != null)
+            {
+                if (res.GetNext() == null)
+                {
+                    IntNode r = new IntNode(num);
+                    r.SetNext(res.GetNext());
+                    res.SetNext(r);
+                    return b;
+                }
+                if ((res.GetInfo() >= num) && (num >= res.GetNext().GetInfo()))
+                {
+                    IntNode r = new IntNode(num);
+                    r.SetNext(res.GetNext());
+                    res.SetNext(r);
+                    return b;
+                }
+                res = res.GetNext();
+            }
+            return res;
+        }
+
+        public void InsertOrderedToBS(int num)
+        {
+            node = InsertOrdered(num, node);
+        }
+
+
+        private bool Ordered(IntNode obj)
+        {
+            if ((obj == null) || (obj.GetNext() == null))
+                return true;
+            while ((obj.GetNext() != null) && (obj.GetInfo() == obj.GetNext().GetInfo()))
+                obj = obj.GetNext();
+            if (obj.GetNext() == null)
+                return true;
+            if (obj.GetInfo() > obj.GetNext().GetInfo())
+            {
+                while (obj.GetNext() != null)
+                {
+                    if (obj.GetNext().GetInfo() > obj.GetInfo())
+                        return false;
+                    obj = obj.GetNext();
+                }
+            }
+            else
+            {
+                while (obj.GetNext() != null)
+                {
+                    if (obj.GetNext().GetInfo() < obj.GetInfo())
+                        return false;
+                    obj = obj.GetNext();
+                }
+            }
+            return true;
+        }
+
+        public bool IsOrdered()
+        {
+            return Ordered(node);
+        }
+
+
+        public bool IsSame(MySet otherset)
+        {
+            int n = 0;
+            while (node != null)
+            {
+                if (!otherset.BelongTo(node.GetInfo()))
+                    return false;
+                node = node.GetNext();
+                n++;
+            }
+            if (n != otherset.CheckLen())
+                return false;
+            return true;
+        }
+
 
         public override string ToString()
         {
